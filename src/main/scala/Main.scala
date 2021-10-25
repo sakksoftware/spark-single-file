@@ -20,9 +20,11 @@ object Main extends App {
 
     val df1 = Seq(("Java", "20000"), ("Python", "100000"), ("Scala", "3000") ).toDF("Course", "Level")
 
-    writeFile(df1, "final")
+    //writeFile(df1, "final")
 
+    //writeTable(df1, "spark-single")
 
+    df1.show(false)
 
   }
 
@@ -56,6 +58,15 @@ object Main extends App {
 
     hdfs.delete(srcPath, true)
 
+
+  }
+
+  def writeTable(df: DataFrame, tablename: String): Unit = {
+
+    df.write
+      .format("jdbc")
+      .options(Map("url" -> "jdbc:postgresql://localhost", "user" -> "sakksoftware", "thenewshit" -> "thenewshit", "dbtable" -> s"app.$tablename"))
+      .save()
 
   }
 
